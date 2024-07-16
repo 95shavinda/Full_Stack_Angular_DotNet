@@ -12,5 +12,13 @@ export class UsersService {
 
   constructor(private http : HttpClient) { }
 
-  getAllUsers=():Observable<User[]> => this.http.get<User[]>(this.baseUrl + "/GetAll")
+  getAllUsers=():Observable<User[]> => this.http.get<User[]>(this.baseUrl + "/GetAll");
+
+  addUser=(data:User) => this.http.post(this.baseUrl + "/Create",data);
+
+  getUserById=(id:number):Observable<User> => this.http.get<User>(this.baseUrl + "/GetById/" + id);
+
+  deleteUser=(id:number) => this.http.delete(this.baseUrl + "/Delete/" + id);
+
+  updateUser=(id:number, data: User) => this.http.put(this.baseUrl + "/Update/" + id,data);
 }

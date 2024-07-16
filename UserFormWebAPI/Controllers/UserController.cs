@@ -23,16 +23,16 @@ namespace UserFormWebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody] User user)
+        public async Task<IActionResult> CreateAsync(User user)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 await _context.Users.AddAsync(user);
                 var result = await _context.SaveChangesAsync();
 
-                if(result > 0)
+                if (result > 0)
                 {
-                    return Ok();
+                    return Ok(user);
                 }
 
                 return BadRequest();
@@ -43,7 +43,7 @@ namespace UserFormWebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetByIdAsync(int id)
         {
-            if(id == 0)
+            if (id == 0)
             {
                 return NotFound();
             }
@@ -59,7 +59,7 @@ namespace UserFormWebAPI.Controllers
             {
                 return BadRequest("Student not found");
             }
-            
+
             existingUser.Name = user.Name;
             existingUser.Address = user.Address;
             existingUser.PhoneNumber = user.PhoneNumber;
@@ -68,14 +68,14 @@ namespace UserFormWebAPI.Controllers
             _context.Update(existingUser);
             var result = await _context.SaveChangesAsync();
 
-            if(result > 0)
+            if (result > 0)
             {
-                return Ok("User Successfully Updated");
+                return Ok();
             }
-            return BadRequest("Unable to update user");
+            return BadRequest();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
             if(id == 0)
@@ -94,10 +94,10 @@ namespace UserFormWebAPI.Controllers
             
             if(result > 0)
             {
-                return Ok("User Successfully Deleted");
+                return Ok();
             }
 
-            return BadRequest("Unable to delete user");
+            return BadRequest();
         }
     }
 }
